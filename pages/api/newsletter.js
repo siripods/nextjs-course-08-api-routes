@@ -1,4 +1,5 @@
 //import { connectDatabase, insertDocument } from '../../helpers/db-util';
+import { MongoClient } from "mongodb";
 
 async function handler(req, res) {
   if (req.method === 'POST') {
@@ -9,6 +10,10 @@ async function handler(req, res) {
       return;
     }
 
+    const client = await MongoClient.connect('mongodb+srv://siripods:mongo1siri@cluster0.tfpkqip.mongodb.net/?retryWrites=true&w=majority');
+    const db = client.db();
+    await  db.collection('emails').insertOne({email: userEmail});
+    client.close();
     res.status(201).json({ message: 'Signed up!' });
   }
 }
